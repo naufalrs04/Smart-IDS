@@ -7,8 +7,9 @@ WORKDIR /app
 # Install system dependencies for Node.js
 RUN apt-get update && apt-get install -y curl
 
-# Install Node.js (16.x LTS)
-RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash - && \
+
+# Install Node.js v22
+RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
     apt-get install -y nodejs
 
 # Copy Node.js dependency files first
