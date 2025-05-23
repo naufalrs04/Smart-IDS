@@ -1,40 +1,23 @@
-# Base image with Python
-FROM python:3.10
+FROM python:3.10-slim
 
-# Set working directory
+# Install dependencies
+RUN apt-get update && apt-get install -y curl gnupg && \
+    curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
+    apt-get install -y nodejs build-essential
+
+# Create app directory
 WORKDIR /app
 
-# Install system dependencies for Node.js
-RUN apt-get update && apt-get install -y curl
-
-
-# Install Node.js v22
-RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
-    apt-get install -y nodejs
-
-# Copy Node.js dependency files first
-COPY package*.json ./
-
-# Install frontend dependencies
-RUN npm install
-
-# Build frontend
-RUN npm run build
-
-# Copy Python requirements
-COPY requirements.txt .
-
 # Install Python dependencies
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Install waitress
-RUN pip install waitress
-
-# Copy the rest of the application
+# Copy app files
 COPY . .
 
-# Expose the port the app runs on
-EXPOSE 5000
+# Install node dependencies and build assets
+RUN npm install && npm run build
 
-# Start the app using Waitress
+# Use waitress for serving Flask
+EXPOSE 5000
 CMD ["waitress-serve", "--port=5000", "app:app"]
