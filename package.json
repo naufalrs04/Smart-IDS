@@ -1,0 +1,39 @@
+{
+  "name": "opta-ids",
+  "version": "1.0.0",
+  "description": "This repository contains a web application developed with Python and Flask, designed to demonstrate and optimize machine learning models for an anomaly-based Intrusion Detection System (IDS). It aims to assist in identifying unusual patterns that may indicate potential threats in a network.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prettier": "prettier . --check",
+    "prettier:write": "prettier . --write",
+    "start": "python app.py",
+    "build": "webpack --mode production",
+    "dev": "webpack serve --mode development --open"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nippotism/Opta-IDS.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nippotism/Opta-IDS/issues"
+  },
+  "homepage": "https://github.com/nippotism/Opta-IDS#readme",
+  "dependencies": {
+    "prettier": "^3.5.3"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.27.1",
+    "@babel/preset-env": "^7.27.2",
+    "babel-loader": "^10.0.0",
+    "css-loader": "^7.1.2",
+    "html-webpack-plugin": "^5.6.3",
+    "style-loader": "^4.0.0",
+    "webpack": "^5.99.9",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.1"
+  },
+  "keywords": []
+}

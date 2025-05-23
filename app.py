@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import joblib
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/static')
 model = joblib.load('KNN5Feature.pkl')
 
 @app.route('/')
