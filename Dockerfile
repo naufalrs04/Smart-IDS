@@ -1,28 +1,39 @@
-# Use a slim, smaller image
-FROM python:3.10-slim
+# Base image with Python
+FROM python:3.10
 
 # Set working directory
 WORKDIR /app
 
-# Install system dependencies (for pip + gunicorn + ML libs)
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    gcc \
-    libglib2.0-0 \
-    libsm6 \
-    libxext6 \
-    libxrender-dev \
-    && rm -rf /var/lib/apt/lists/*
+# Install system dependencies for Node.js
+RUN apt-get update && apt-get install -y curl
+
+# Install Node.js (16.x LTS)
+RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash - && \
+    apt-get install -y nodejs
+
+# Copy Node.js dependency files first
+COPY package*.json ./
+
+# Install frontend dependencies
+RUN npm install
+
+# Build frontend
+RUN npm run build
+
+# Copy Python requirements
+COPY requirements.txt .
 
 # Install Python dependencies
-COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy project files
+# Install waitress
+RUN pip install waitress
+
+# Copy the rest of the application
 COPY . .
 
-# Expose Flask app port
+# Expose the port the app runs on
 EXPOSE 5000
 
-# Run with gunicorn
-CMD ["gunicorn", "--workers=1", "--bind=0.0.0.0:5000", "app:app"]
+# Start the app using Waitress
+CMD ["waitress-serve", "--port=5000", "app:app"]
