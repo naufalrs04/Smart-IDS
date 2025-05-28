@@ -15,6 +15,7 @@ $(document).ready(function () {
       success: function (response) {
         data = response.data[0];
         console.log(data);
+        console.log('teeys');
 
         if (data.type == "single") {
           if (data.prediction == 0) {
@@ -25,10 +26,10 @@ $(document).ready(function () {
                 </svg>
                 <span class="sr-only">Info</span>
                 <div>
-                    <span class="font-medium">Info !</span> This Packet is predicted as not Intrusion 
+                    <span class="font-medium">Info !</span> This Packet is predicted as not Intrusion by ${data.model}
                 </div>
                 </div>`);
-          } else {
+          } else if (data.prediction == 1) {
             $("#result")
               .html(`<div class="flex items-center p-4 mb-4 text-xs text-red-800 border border-red-300 rounded-lg bg-red-50 " role="alert">
                 <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
@@ -36,12 +37,40 @@ $(document).ready(function () {
                 </svg>
                 <span class="sr-only">Info</span>
                 <div>
-                    <span class="font-medium">Danger !</span> This Packet is predicted as Intrusion  
+                    <span class="font-medium">Danger !</span> This Packet is predicted as Intrusion by ${data.model}
                 </div>
                 </div>`);
+          } else{
+            if(data.percent < 50){
+              $("#result")
+              .html(`<div class="flex items-center p-4 mb-4 text-xs text-green-800 border border-green-300 rounded-lg bg-green-50 " role="alert">
+                <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                </svg>
+                <span class="sr-only">Info</span>
+                <div>
+                    <span class="font-medium">Info !</span> This Packet is ${data.percent}% predicted as not Intrusion 
+                </div>
+                </div>`);
+            }else{
+              $("#result")
+              .html(`<div class="flex items-center p-4 mb-4 text-xs text-red-800 border border-red-300 rounded-lg bg-red-50 " role="alert">
+                <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                </svg>
+                <span class="sr-only">Info</span>
+                <div>
+                    <span class="font-medium">Danger !</span> This Packet is ${data.percent}% predicted as Intrusion  
+                </div>
+                </div>`);
+
+            }
           }
         } else {
           var table = `<div class="overflow-x-auto">
+              <div class="flex items-center justify-between mb-4">
+              <h2 class="text-lg font-semibold text-gray-900">Prediction Result By ${data.model == 'combined' ? 'Combined Algorithm' : data.model}</h2>
+              </div>
               <table class="mt-5 min-w-full divide-y divide-gray-200 text-center border">
                   <thead class="bg-gray-50">
                       <tr>
@@ -58,7 +87,8 @@ $(document).ready(function () {
 
           for (let i = 0; i < data.prediction.length; i++) {
             const row = data.data[i];
-            table += `<tr>
+            if(data.model != 'combined'){
+              table += `<tr>
                 <td class="px-5 py-4 text-gray-900">${i + 1}</td>
                 <td class="px-5 py-4 text-gray-900">${row.pkts}</td>
                 <td class="px-5 py-4 text-gray-900">${row.bytes}</td>
@@ -71,6 +101,22 @@ $(document).ready(function () {
                     </div>
                 </td>
             </tr>`;
+            }else{
+              table += `<tr>
+                <td class="px-5 py-4 text-gray-900">${i + 1}</td>
+                <td class="px-5 py-4 text-gray-900">${row.pkts}</td>
+                <td class="px-5 py-4 text-gray-900">${row.bytes}</td>
+                <td class="px-5 py-4 text-gray-900">${row.spkts}</td>
+                <td class="px-5 py-4 text-gray-900">${row.sbytes}</td>
+                <td class="px-5 py-4 text-gray-900">${row.TnBPDstIP}</td>
+                <td class="px-5 py-4">
+                    <div class="flex items-center justify-center text-center ${data.prediction[i] < 50 ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"} text-xs font-medium px-2.5 py-0.5 rounded-full">
+                        ${data.prediction[i]}% Intrusion
+                    </div>
+                </td>
+            </tr>`;
+
+            }
           }
 
           table += `</tbody></table></div>`;
