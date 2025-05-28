@@ -12,7 +12,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="{{ url_for('static', filename='js/bundle.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+  
     <style>
       ::placeholder {
         font-size: 0.85rem;
@@ -125,6 +126,21 @@
             class="mt-2 w-full px-3 py-2 border border-gray-300 rounded-md text-gray-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           />
         </div>
+        <div>
+            <label for="model" class="block text-sm font-medium text-gray-700">
+              Model
+            </label>
+            <select
+              name="modelfile"
+              id="modelfile"
+              class="mt-2 w-full px-3 py-2 border border-gray-300 rounded-md text-gray-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            >
+              <option value="knn">KNN</option>
+              <option value="dct">Decision Tree</option>
+              <option value="rf">Random Forest</option>
+              <option value="combined">Combined</option>
+            </select>
+          </div>
 
         <!-- OR -->
         <div class="justify-center text-center pt-2">
@@ -203,6 +219,21 @@
               class="mt-2 w-full px-3 py-2 border border-gray-300 rounded-md text-gray-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
+          <div>
+            <label for="model" class="block text-sm font-medium text-gray-700">
+              Model
+            </label>
+            <select
+              name="model"
+              id="model"
+              class="mt-2 w-full px-3 py-2 border border-gray-300 rounded-md text-gray-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            >
+              <option value="knn">KNN</option>
+              <option value="dct">Decision Tree</option>
+              <option value="rf">Random Forest</option>
+              <option value="combined">Combined</option>
+            </select>
+          </div>
         </div>
 
         <!-- Submit -->
@@ -225,6 +256,5 @@
 
       <div id="result" class="my-6"></div>
     </div>
-    <script defer src="/static/js/bundle.js"></script>
-  </body>
+  <script defer src="/static/js/bundle.js"></script></body>
 </html>

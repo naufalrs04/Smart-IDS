@@ -3,12 +3,11 @@ import pandas as pd
 import numpy as np
 import joblib
 
-app = Flask(__name__, template_folder='components')
+app = Flask(__name__, static_url_path='/static')
 
 modelRF = joblib.load('RF5Feature.pkl')
 model = joblib.load('KNN5Feature.pkl')
 modelDCT = joblib.load('DCT5Feature.pkl')
-
 
 @app.route('/')
 def index():
@@ -93,4 +92,4 @@ def predict():
     return redirect(url_for('index'))
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0',port=5000)  # Set debug=True for development
+    app.run(host='0.0.0.0',port=5000)
