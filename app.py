@@ -3,12 +3,13 @@ import pandas as pd
 import numpy as np
 import joblib
 
-app = Flask(__name__, static_url_path='/static')
+app = Flask(__name__, template_folder='components')
+
 model = joblib.load('KNN5Feature.pkl')
 
 @app.route('/')
 def index():
-    return render_template('./index.html')
+    return render_template('index.html')
 
 @app.route('/predict', methods=['POST'])
 def predict():

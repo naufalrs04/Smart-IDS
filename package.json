@@ -13,14 +13,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nippotism/Opta-IDS.git"
+    "url": "git remote add origin https://github.com/naufalrs04/Smart-IDS.git"
   },
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/nippotism/Opta-IDS/issues"
-  },
-  "homepage": "https://github.com/nippotism/Opta-IDS#readme",
+  "homepage": "",
   "dependencies": {
     "prettier": "^3.5.3"
   },

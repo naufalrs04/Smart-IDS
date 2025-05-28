@@ -140,7 +140,6 @@ function switchContent(version) {
 }
 
 function loadAlgorithm(algo) {
-
   Swal.fire(`You selected ${algo}`, "", "success");
   //....
 }
