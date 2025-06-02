@@ -138,7 +138,7 @@ $(document).ready(function () {
   $("#howitworks").on("click", function () {
     Swal.fire({
       title: "How it Works ?",
-      text: "This application detects intrusions based on anomaly detection using Machine Learning Model like KNN, Random Forest, an Decision Tree.",
+      text: "This application detects intrusions based on anomaly detection using AI. It utilizes optimized features for improved accuracy and performance.",
       icon: "question",
       confirmButtonText: "Close",
     });
@@ -208,7 +208,6 @@ document.addEventListener("DOMContentLoaded", function () {
         menu.classList.toggle('hidden');
       });
 
-      // Close dropdown when clicking outside
       document.addEventListener('click', function(event) {
         const btn = document.getElementById('versionBtn');
         const menu = document.getElementById('versionMenu');
@@ -216,17 +215,6 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!btn.contains(event.target) && !menu.contains(event.target)) {
           menu.classList.add('hidden');
         }
-      });
-
-      // Add smooth transitions for form interactions
-      document.querySelectorAll('input, select').forEach(element => {
-        element.addEventListener('focus', function() {
-          this.parentElement.classList.add('transform', 'scale-105');
-        });
-        
-        element.addEventListener('blur', function() {
-          this.parentElement.classList.remove('transform', 'scale-105');
-        });
       });
 });
 
