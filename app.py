@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import joblib
 
-app = Flask(__name__, template_folder='static')
+app = Flask(__name__, template_folder='/static')
 
 modelRF = joblib.load('RF5Feature.pkl')
 model = joblib.load('KNN5Feature.pkl')
