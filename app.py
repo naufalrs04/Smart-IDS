@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import joblib
 
-app = Flask(__name__, template_folder='components')
+app = Flask(__name__, template_folder='static')
 
 modelRF = joblib.load('RF5Feature.pkl')
 model = joblib.load('KNN5Feature.pkl')
@@ -92,4 +92,4 @@ def predict():
     return redirect(url_for('index'))
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0',port=5000, debug=True)
+    app.run(host='0.0.0.0',port=5000)
