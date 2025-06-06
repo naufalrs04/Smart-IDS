@@ -169,30 +169,22 @@ document.addEventListener("DOMContentLoaded", function () {
   const versionMenu = document.getElementById("versionMenu");
 
   versionBtn.addEventListener("click", function (e) {
-    e.stopPropagation(); // prevent event bubbling
+    e.stopPropagation(); // Prevent event bubbling
     versionMenu.classList.toggle("hidden");
   });
 
-  document.addEventListener("click", function () {
-    versionMenu.classList.add("hidden");
-  });
-
-  document.getElementById("versionBtn").addEventListener("click", function () {
-    const menu = document.getElementById("versionMenu");
-    menu.classList.toggle("hidden");
-  });
-
-  // Close dropdown when clicking outside
   document.addEventListener("click", function (event) {
-    const btn = document.getElementById("versionBtn");
-    const menu = document.getElementById("versionMenu");
-
-    if (!btn.contains(event.target) && !menu.contains(event.target)) {
-      menu.classList.add("hidden");
+    if (
+      versionBtn &&
+      versionMenu &&
+      !versionBtn.contains(event.target) &&
+      !versionMenu.contains(event.target)
+    ) {
+      versionMenu.classList.add("hidden");
     }
   });
 
-  // Add smooth transitions for form interactions
+  // Add smooth transitions for form inputs
   document.querySelectorAll("input, select").forEach((element) => {
     element.addEventListener("focus", function () {
       this.parentElement.classList.add("transform", "scale-105");
@@ -204,31 +196,26 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
+// Mobile menu logic
 let mobileMenuOpen = false;
+window.toggleMobileMenu = toggleMobileMenu;
+window.toggleDropdown = toggleDropdown;
 
-// Toggle dropdown visibility
 function toggleDropdown(id) {
   const el = document.getElementById(id);
-  if (el.classList.contains("hidden")) {
-    el.classList.remove("hidden");
-  } else {
-    el.classList.add("hidden");
-  }
+  el.classList.toggle("hidden");
 }
 
-// Enhanced mobile menu toggle
 function toggleMobileMenu() {
   const mobileMenu = document.getElementById("mobileMenu");
   const hamburger = document.getElementById("mobileMenuBtn");
 
   if (!mobileMenuOpen) {
-    // Open menu
     mobileMenu.classList.remove("translate-x-full");
     mobileMenu.classList.add("translate-x-0");
     hamburger.classList.add("active");
     mobileMenuOpen = true;
   } else {
-    // Close menu
     mobileMenu.classList.remove("translate-x-0");
     mobileMenu.classList.add("translate-x-full");
     hamburger.classList.remove("active");
@@ -250,24 +237,8 @@ document.addEventListener("click", function (event) {
   }
 });
 
-// Handle window resize
 window.addEventListener("resize", function () {
   if (window.innerWidth >= 1024 && mobileMenuOpen) {
     toggleMobileMenu();
-  }
-});
-
-// Close dropdowns when clicking outside
-document.addEventListener("click", function (event) {
-  const versionBtn = document.getElementById("versionBtn");
-  const versionMenu = document.getElementById("versionMenu");
-
-  if (
-    versionBtn &&
-    versionMenu &&
-    !versionBtn.contains(event.target) &&
-    !versionMenu.contains(event.target)
-  ) {
-    versionMenu.classList.add("hidden");
   }
 });
