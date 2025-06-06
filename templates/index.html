@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Optimized Anomaly Intrusion Detection System</title>
+    <title>Smart Intrusion Detection System</title>
     <link
       rel="icon"
       href="{{url_for('static',filename = 'images/icon.png')}}"
@@ -12,249 +12,719 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
-  
+
+    <!-- <script src="{{ url_for('static', filename='js/script.js') }}"></script> -->
+    <script src="{{ url_for('static', filename='js/bundle.js') }}"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            primary: "#2563eb",
+            secondary: "#7c3aed",
+            accent: "#06b6d4",
+            dark: "#0f172a",
+            light: "#f8fafc",
+          },
+        },
+      };
+    </script>
+
     <style>
       ::placeholder {
         font-size: 0.85rem;
         font-style: italic;
       }
+
+      .gradient-bg {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      }
+
+      .glass-effect {
+        backdrop-filter: blur(16px);
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        -webkit-backdrop-filter: blur(10px);
+      }
+
+      .card-hover {
+        transition: all 0.3s ease;
+      }
+
+      .card-hover:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+      }
+
+      .floating-animation {
+        animation: float 6s ease-in-out infinite;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      .pulse-glow {
+        animation: pulse-glow 2s infinite;
+      }
+
+      @keyframes pulse-glow {
+        0%,
+        100% {
+          box-shadow: 0 0 20px rgba(37, 99, 235, 0.4);
+        }
+        50% {
+          box-shadow: 0 0 30px rgba(37, 99, 235, 0.8);
+        }
+      }
+
+      .cyber-grid {
+        background-image:
+          linear-gradient(rgba(37, 99, 235, 0.1) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(37, 99, 235, 0.1) 1px, transparent 1px);
+        background-size: 50px 50px;
+      }
+
+      .mobile-menu-enter {
+        animation: slideDown 0.3s ease-out;
+      }
+
+      .mobile-menu-exit {
+        animation: slideUp 0.3s ease-out;
+      }
+
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes slideUp {
+        from {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        to {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+      }
+
+      .hamburger {
+        transition: all 0.3s ease;
+      }
+
+      .hamburger.active .line1 {
+        transform: rotate(-45deg) translate(-5px, 6px);
+      }
+
+      .hamburger.active .line2 {
+        opacity: 0;
+      }
+
+      .hamburger.active .line3 {
+        transform: rotate(45deg) translate(-5px, -6px);
+      }
+
+      .hamburger .line {
+        transition: all 0.3s ease;
+      }
+
+      .version-badge {
+        background: linear-gradient(45deg, #10b981, #06b6d4);
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.8;
+        }
+      }
+
+      .nav-item {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .nav-item::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.2),
+          transparent
+        );
+        transition: left 0.5s;
+      }
+
+      .nav-item:hover::before {
+        left: 100%;
+      }
     </style>
   </head>
 
-  <body class="bg-gray-100 min-h-screen items-center justify-center">
-    <nav class="fixed top-0 left-0 right-0 bg-white shadow-md z-50">
-      <div class="max-w-full mx-auto px-4">
-        <div class="flex items-center justify-between h-16">
-          <!-- Logo -->
-          <div class="ml-3 flex items-center">
-            <img
-              src="{{url_for('static',filename = 'images/Optaids.png')}}"
-              alt="Logo"
-              class="h-20 w-20"
-            />
-          </div>
-
-          <!-- Navigation Items -->
-          <div class="hidden md:block">
-            <div class="flex items-center space-x-16">
-              <!-- Version Dropdown -->
-              <div class="relative">
-                <button
-                  id="versionBtn"
-                  class="px-3 py-2 text-gray-700 hover:text-blue-600 focus:outline-none"
-                >
-                  Version
-                  <svg
-                    class="inline-block w-4 h-4 ml-1"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
-                </button>
-                <div
-                  id="versionMenu"
-                  class="hidden absolute w-48 bg-white border rounded-md shadow-lg mt-1 z-10"
-                >
-                  <a
-                    href="#"
-                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    onclick="switchContent('Version1.0.0')"
-                    >V.1.0.0</a
-                  >
-                  <a
-                    href="#"
-                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    onclick="switchContent('Version1.0.1')"
-                    >V.1.0.1</a
-                  >
-                </div>
-              </div>
+  <body class="min-h-screen gradient-bg cyber-grid">
+    <nav
+      class="fixed top-0 left-0 right-0 glass-effect z-50 border-b border-white/20 bg-white/80 backdrop-blur-md"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6">
+        <div class="flex items-center justify-between h-16 sm:h-20">
+          <!-- Logo Section -->
+          <div class="flex items-center space-x-3 floating-animation">
+            <div
+              class="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg"
+            >
+              <svg
+                class="w-6 h-6 sm:w-8 sm:h-8 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.031 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                ></path>
+              </svg>
+            </div>
+            <div class="hidden sm:block">
+              <h1 class="text-lg sm:text-xl font-bold text-black">SmartIDS</h1>
+              <p class="text-xs text-black/70">AI Detection System</p>
+            </div>
+            <div class="sm:hidden">
+              <h1 class="text-lg font-bold text-black">SmartIDS</h1>
             </div>
           </div>
 
-          <!-- About Button -->
-          <div class="flex items-center space-x-4">
+          <!-- Desktop Menu -->
+          <div class="hidden lg:flex items-center space-x-6">
+            <!-- Version Dropdown -->
+            <div class="relative">
+              <button
+                id="versionBtn"
+                class="nav-item flex items-center px-4 py-2 text-black/80 hover:text-black bg-gray-100 rounded-lg hover:bg-gray-200 transition-all duration-300 group"
+                onclick="toggleDropdown('versionMenu')"
+              >
+                <svg
+                  class="w-5 h-5 mr-2 text-gray-800"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M20 10H4v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8ZM9 13v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1Z"
+                    clip-rule="evenodd"
+                  />
+                  <path
+                    d="M2 6a2 2 0 0 1 2-2h16a2 2 0 1 1 0 4H4a2 2 0 0 1-2-2Z"
+                  />
+                </svg>
+                Version
+                <svg
+                  class="w-4 h-4 ml-2 transition-transform group-hover:rotate-180"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  ></path>
+                </svg>
+              </button>
+              <div
+                id="versionMenu"
+                class="hidden absolute right-0 w-48 glass-effect rounded-xl shadow-2xl mt-2 z-10 border border-white/20"
+              >
+                <div class="py-2">
+                  <a
+                    href="http://app.optaids.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-white/20 transition-colors rounded-lg mx-2"
+                  >
+                    <span
+                      class="version-badge w-2 h-2 rounded-full mr-3"
+                    ></span>
+                    V.1.0.0
+                    <span
+                      class="ml-auto text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full"
+                      >OptaIDS</span
+                    >
+                  </a>
+                  <a
+                    href="http://smart.optaids.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-white/20 transition-colors rounded-lg mx-2"
+                  >
+                    <span class="w-2 h-2 bg-blue-400 rounded-full mr-3"></span>
+                    V.1.0.1
+                    <span
+                      class="ml-auto text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full"
+                      >SmartIDS</span
+                    >
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- About Button -->
             <button
               id="howitworks"
-              class="flex items-center px-4 py-2 text-blue-600 border border-blue-600 rounded-md hover:bg-blue-600 hover:text-white transition-colors"
+              class="nav-item flex items-center px-6 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                class="bi bi-question-diamond-fill mr-2"
-                viewBox="0 0 16 16"
-              >
+              <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
                 <path
-                  d="M9.05.435c-.58-.58-1.52-.58-2.1 0L.436 6.95c-.58.58-.58 1.519 0 2.098l6.516 6.516c.58.58 1.519.58 2.098 0l6.516-6.516c.58-.58.58-1.519 0-2.098zM5.495 6.033a.237.237 0 0 1-.24-.247C5.35 4.091 6.737 3.5 8.005 3.5c1.396 0 2.672.73 2.672 2.24 0 1.08-.635 1.594-1.244 2.057-.737.559-1.01.768-1.01 1.486v.105a.25.25 0 0 1-.25.25h-.81a.25.25 0 0 1-.25-.246l-.004-.217c-.038-.927.495-1.498 1.168-1.987.59-.444.965-.736.965-1.371 0-.825-.628-1.168-1.314-1.168-.803 0-1.253.478-1.342 1.134-.018.137-.128.25-.266.25zm2.325 6.443c-.584 0-1.009-.394-1.009-.927 0-.552.425-.94 1.01-.94.609 0 1.028.388 1.028.94 0 .533-.42.927-1.029.927"
+                  fill-rule="evenodd"
+                  d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm9.008-3.018a1.502 1.502 0 0 1 2.522 1.159v.024a1.44 1.44 0 0 1-1.493 1.418 1 1 0 0 0-1.037.999V14a1 1 0 1 0 2 0v-.539a3.44 3.44 0 0 0 2.529-3.256 3.502 3.502 0 0 0-7-.255 1 1 0 0 0 2 .076c.014-.398.187-.774.48-1.044Zm.982 7.026a1 1 0 1 0 0 2H12a1 1 0 1 0 0-2h-.01Z"
+                  clip-rule="evenodd"
                 />
               </svg>
-              <p class="mr-1">About</p>
+              About
             </button>
+          </div>
+
+          <!-- Mobile Menu Button -->
+          <div class="lg:hidden flex items-center">
+            <button
+              id="mobileMenuBtn"
+              class="hamburger focus:outline-none p-2 rounded-lg hover:bg-gray-100 transition-colors"
+              aria-label="Toggle menu"
+              onclick="toggleMobileMenu()"
+            >
+              <div class="w-6 h-6 flex flex-col justify-center items-center">
+                <span
+                  class="line line1 w-6 h-0.5 bg-gray-900 block mb-1"
+                ></span>
+                <span
+                  class="line line2 w-6 h-0.5 bg-gray-900 block mb-1"
+                ></span>
+                <span class="line line3 w-6 h-0.5 bg-gray-900 block"></span>
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Enhanced Mobile Menu -->
+      <div
+        id="mobileMenu"
+        class="lg:hidden fixed inset-y-0 top-16 right-0 w-1/2 z-40 transform translate-x-full transition-transform duration-300 ease-in-out"
+      >
+        <div
+          class="glass-effect border-b border-white/20 bg-white/90 backdrop-blur-md"
+        >
+          <div class="flex flex-col h-full">
+            <div class="flex-1 px-6 py-4 space-y-4 bg-transparent">
+              <!-- Version Section -->
+              <div class="space-y-3">
+                <h4
+                  class="text-black/80 text-sm font-semibold uppercase tracking-wide"
+                >
+                  Versions
+                </h4>
+                <h3 class="text-black/70 text-sm">
+                  Choose your preferred version
+                </h3>
+                <div class="space-y-2">
+                  <a
+                    href="http://app.optaids.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="flex items-center justify-between p-4 bg-white/10 hover:bg-white/20 rounded-xl transition-all duration-300 transform hover:scale-105"
+                  >
+                    <div class="flex items-center">
+                      <span
+                        class="version-badge w-3 h-3 rounded-full mr-3"
+                      ></span>
+                      <div>
+                        <div class="text-black font-medium">Version 1.0.0</div>
+                      </div>
+                    </div>
+                    <span
+                      class="bg-green-400 text-green-900 px-2 py-1 rounded-full text-xs font-medium"
+                      >OptaIDS</span
+                    >
+                  </a>
+                  <a
+                    href="http://smart.optaids.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="flex items-center justify-between p-4 bg-white/10 hover:bg-white/20 rounded-xl transition-all duration-300 transform hover:scale-105"
+                  >
+                    <div class="flex items-center">
+                      <span
+                        class="w-3 h-3 bg-blue-400 rounded-full mr-3"
+                      ></span>
+                      <div>
+                        <div class="text-black font-medium">Version 1.0.1</div>
+                      </div>
+                    </div>
+                    <span
+                      class="bg-blue-400 text-blue-900 px-2 py-1 rounded-full text-xs font-medium"
+                      >SmartIDS</span
+                    >
+                  </a>
+                </div>
+              </div>
+
+              <!-- Actions Section -->
+              <div class="space-y-3 pt-4">
+                <h4
+                  class="text-black/80 text-sm font-semibold uppercase tracking-wide"
+                >
+                  Actions
+                </h4>
+                <button
+                  id="howitworks-Mobile"
+                  class="w-full flex items-center justify-center p-4 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 rounded-xl transition-all duration-300 shadow-lg transform hover:scale-105"
+                >
+                  <svg
+                    class="w-6 h-6 mr-3 text-white"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm9.008-3.018a1.502 1.502 0 0 1 2.522 1.159v.024a1.44 1.44 0 0 1-1.493 1.418 1 1 0 0 0-1.037.999V14a1 1 0 1 0 2 0v-.539a3.44 3.44 0 0 0 2.529-3.256 3.502 3.502 0 0 0-7-.255 1 1 0 0 0 2 .076c.014-.398.187-.774.48-1.044Zm.982 7.026a1 1 0 1 0 0 2H12a1 1 0 1 0 0-2h-.01Z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                  <span class="text-white font-medium">About SmartIDS</span>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </nav>
 
-    <!-- KNN Content -->
-    <div
-      id="knn-content"
-      class="bg-white shadow-lg rounded-lg p-8 max-w-2xl w-full my-28 mx-auto"
-    >
-      <h1 class="text-2xl font-semibold mb-14 text-center text-gray-800">
-        Optimized Anomaly Intrusion Detection System
-      </h1>
-      <form class="space-y-6">
-        <!-- Upload -->
-        <div>
-          <label for="file" class="block text-sm font-medium text-gray-700"
-            >Upload Your CSV File Here!</label
+    <div class="min-h-screen flex items-center justify-center px-4 py-24">
+      <div
+        class="w-full max-w-4xl glass-effect rounded-3xl p-8 card-hover border border-white/20 shadow-2xl"
+      >
+        <!-- Header -->
+        <div class="text-center mb-12">
+          <div
+            class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl mb-6 pulse-glow"
           >
-          <input
-            type="file"
-            name="file"
-            accept=".csv"
-            class="mt-2 w-full px-3 py-2 border border-gray-300 rounded-md text-gray-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-          />
-        </div>
-        <div>
-            <label for="model" class="block text-sm font-medium text-gray-700">
-              Model
-            </label>
-            <select
-              name="modelfile"
-              id="modelfile"
-              class="mt-2 w-full px-3 py-2 border border-gray-300 rounded-md text-gray-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            <svg
+              class="w-10 h-10 text-white"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
             >
-              <option value="knn">KNN</option>
-              <option value="dct">Decision Tree</option>
-              <option value="rf">Random Forest</option>
-              <option value="combined">Combined</option>
-            </select>
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.031 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+              ></path>
+            </svg>
           </div>
-
-        <!-- OR -->
-        <div class="justify-center text-center pt-2">
-          <h1 class="text-xl font-semibold text-gray-800">OR</h1>
-          <h1 class="text-sm italic font-medium text-gray-700">
-            Input Below Directly!
+          <h1 class="text-4xl font-bold text-black mb-4">
+            Smart Intrusion Detection System
           </h1>
+          <p class="text-black/70 text-lg">
+            Advanced AI-powered threat detection and analysis
+          </p>
         </div>
 
-        <!-- Manual Input -->
-        <div class="grid grid-cols-2 gap-5">
-          <div>
-            <label for="pkts" class="block text-sm font-medium text-gray-700"
-              >pkts</label
-            >
-            <input
-              type="number"
-              name="pkts"
-              min="0"
-              step="any"
-              placeholder="Total count of packets in transaction"
-              class="mt-2 w-full px-3 py-2 border border-gray-300 rounded-md text-gray-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            />
-          </div>
-          <div>
-            <label for="bytes" class="block text-sm font-medium text-gray-700"
-              >bytes</label
-            >
-            <input
-              type="number"
-              name="bytes"
-              min="0"
-              step="any"
-              placeholder="Total number of bytes in transaction"
-              class="mt-2 w-full px-3 py-2 border border-gray-300 rounded-md text-gray-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            />
-          </div>
-          <div>
-            <label for="spkts" class="block text-sm font-medium text-gray-700"
-              >spkts</label
-            >
-            <input
-              type="number"
-              name="spkts"
-              min="0"
-              step="any"
-              placeholder="Source-to-destination packet count"
-              class="mt-2 w-full px-3 py-2 border border-gray-300 rounded-md text-gray-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            />
-          </div>
-          <div>
-            <label for="sbytes" class="block text-sm font-medium text-gray-700"
-              >sbytes</label
-            >
-            <input
-              type="number"
-              name="sbytes"
-              min="0"
-              step="any"
-              placeholder="Source-to-destination byte count"
-              class="mt-2 w-full px-3 py-2 border border-gray-300 rounded-md text-gray-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            />
-          </div>
-          <div>
-            <label
-              for="TnBPDstIP"
-              class="block text-sm font-medium text-gray-700"
-              >TnBPDstIP</label
-            >
-            <input
-              type="number"
-              name="TnBPDstIP"
-              min="0"
-              step="any"
-              placeholder="Total Number of bytes per Destination IP"
-              class="mt-2 w-full px-3 py-2 border border-gray-300 rounded-md text-gray-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            />
-          </div>
-          <div>
-            <label for="model" class="block text-sm font-medium text-gray-700">
-              Model
-            </label>
-            <select
-              name="model"
-              id="model"
-              class="mt-2 w-full px-3 py-2 border border-gray-300 rounded-md text-gray-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            >
-              <option value="knn">KNN</option>
-              <option value="dct">Decision Tree</option>
-              <option value="rf">Random Forest</option>
-              <option value="combined">Combined</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- Submit -->
-        <div class="pt-3 space-y-4">
-          <button
-            type="button"
-            id="reset-btn"
-            class="w-full bg-red-600 text-white py-2 rounded-md hover:bg-red-700 transition-colors focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2"
+        <form class="space-y-4">
+          <!-- File Upload Section -->
+          <div
+            class="flex flex-col bg-white/5 rounded-2xl p-6 border border-white/10"
           >
-            Reset
-          </button>
-          <button
-            type="submit"
-            class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-          >
-            Check
-          </button>
-        </div>
-      </form>
+            <div class="flex flex-col gap-3 items-center pb-8">
+              <svg
+                class="w-8 h-8 text-blue-400 items-center"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                ></path>
+              </svg>
+              <h3 class="text-sm font-semibold text-black/75">
+                Upload Dataset
+              </h3>
+            </div>
 
-      <div id="result" class="my-6"></div>
+            <div class="space-y-4">
+              <div>
+                <label
+                  for="file"
+                  class="block text-sm font-medium text-black/90 mb-2"
+                >
+                  Choose your CSV file !
+                </label>
+                <div class="relative">
+                  <input
+                    type="file"
+                    name="file"
+                    accept=".csv"
+                    class="w-full px-4 py-3 bg-white/90 border-2 border-blue-200 rounded-xl text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-400 focus:bg-white transition-all duration-300 shadow-inner"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label
+                  for="modelfile"
+                  class="block text-sm font-medium text-black/90 mb-2"
+                >
+                  Select Model for File Processing
+                </label>
+                <select
+                  name="modelfile"
+                  id="modelfile"
+                  class="w-full px-4 py-3 bg-white/90 border-2 border-blue-200 rounded-xl text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-400 focus:bg-white transition-all duration-300 shadow-inner"
+                >
+                  <option value="knn" class="bg-white text-gray-800">
+                    KNN Algorithm
+                  </option>
+                  <option value="dct" class="bg-white text-gray-800">
+                    Decision Tree
+                  </option>
+                  <option value="rf" class="bg-white text-gray-800">
+                    Random Forest
+                  </option>
+                  <option value="combined" class="bg-white text-gray-800">
+                    Combined Models
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Divider -->
+          <div class="flex items-center justify-center pt-4">
+            <div class="px-6">
+              <span
+                class="text-2xl font-bold text-black bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent"
+              >
+                OR
+              </span>
+            </div>
+          </div>
+
+          <div class="text-center pb-8">
+            <p class="text-black/70 italic">
+              Input parameters manually for single prediction
+            </p>
+          </div>
+
+          <!-- Manual Input Section -->
+          <div class="bg-white/5 rounded-2xl p-6 border border-white/10">
+            <div class="flex flex-col gap-3 items-center pb-8">
+              <svg
+                class="w-6 h-6 text-purple-400 mr-3"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+                ></path>
+              </svg>
+              <h3 class="text-sm font-semibold text-black/75">
+                Network Parameters
+              </h3>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="space-y-2">
+                <label
+                  for="pkts"
+                  class="block text-sm font-medium text-black/90"
+                >
+                  Packet Count
+                </label>
+                <input
+                  type="number"
+                  name="pkts"
+                  min="0"
+                  step="any"
+                  placeholder="Total count of packets in transaction"
+                  class="w-full px-4 py-3 bg-white/90 border-2 border-blue-200 rounded-xl text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-400 focus:bg-white transition-all duration-300 shadow-inner"
+                />
+              </div>
+
+              <div class="space-y-2">
+                <label
+                  for="bytes"
+                  class="block text-sm font-medium text-black/90"
+                >
+                  Bytes Count
+                </label>
+                <input
+                  type="number"
+                  name="bytes"
+                  min="0"
+                  step="any"
+                  placeholder="Total number of bytes in transaction"
+                  class="w-full px-4 py-3 bg-white/90 border-2 border-blue-200 rounded-xl text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-400 focus:bg-white transition-all duration-300 shadow-inner"
+                />
+              </div>
+
+              <div class="space-y-2">
+                <label
+                  for="spkts"
+                  class="block text-sm font-medium text-black/90"
+                >
+                  Source Packets
+                </label>
+                <input
+                  type="number"
+                  name="spkts"
+                  min="0"
+                  step="any"
+                  placeholder="Source-to-destination packet count"
+                  class="w-full px-4 py-3 bg-white/90 border-2 border-blue-200 rounded-xl text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-400 focus:bg-white transition-all duration-300 shadow-inner"
+                />
+              </div>
+
+              <div class="space-y-2">
+                <label
+                  for="sbytes"
+                  class="block text-sm font-medium text-black/90"
+                >
+                  Source Bytes
+                </label>
+                <input
+                  type="number"
+                  name="sbytes"
+                  min="0"
+                  step="any"
+                  placeholder="Source-to-destination byte count"
+                  class="w-full px-4 py-3 bg-white/90 border-2 border-blue-200 rounded-xl text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-400 focus:bg-white transition-all duration-300 shadow-inner"
+                />
+              </div>
+
+              <div class="space-y-2">
+                <label
+                  for="TnBPDstIP"
+                  class="block text-sm font-medium text-black/90"
+                >
+                  Bytes per Destination IP
+                </label>
+                <input
+                  type="number"
+                  name="TnBPDstIP"
+                  min="0"
+                  step="any"
+                  placeholder="Total Number of bytes per Destination IP"
+                  class="w-full px-4 py-3 bg-white/90 border-2 border-blue-200 rounded-xl text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-400 focus:bg-white transition-all duration-300 shadow-inner"
+                />
+              </div>
+
+              <div class="space-y-2">
+                <label
+                  for="model"
+                  class="block text-sm font-medium text-black/90"
+                >
+                  Detection Model
+                </label>
+                <select
+                  name="model"
+                  id="model"
+                  class="w-full px-4 py-3 bg-white/90 border-2 border-blue-200 rounded-xl text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-400 focus:bg-white transition-all duration-300 shadow-inner"
+                >
+                  <option value="knn" class="bg-white text-gray-800">
+                    KNN Algorithm
+                  </option>
+                  <option value="dct" class="bg-white text-gray-800">
+                    Decision Tree
+                  </option>
+                  <option value="rf" class="bg-white text-gray-800">
+                    Random Forest
+                  </option>
+                  <option value="combined" class="bg-white text-gray-800">
+                    Combined Models
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="flex flex-col md:flex-row gap-4 pt-6">
+            <button
+              type="button"
+              id="reset-btn"
+              class="flex-1 flex items-center justify-center px-6 py-4 bg-gradient-to-r from-red-500 to-pink-600 text-white rounded-xl hover:from-red-600 hover:to-pink-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+            >
+              <svg
+                class="w-5 h-5 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                ></path>
+              </svg>
+              Reset Form
+            </button>
+
+            <button
+              type="submit"
+              class="flex-1 flex items-center justify-center px-6 py-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl hover:from-blue-600 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+            >
+              <svg
+                class="w-5 h-5 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                ></path>
+              </svg>
+              Analyze Threat
+            </button>
+          </div>
+        </form>
+
+        <!-- Results Section -->
+        <div id="result" class="mt-8"></div>
+      </div>
     </div>
   <script defer src="/static/js/bundle.js"></script></body>
 </html>

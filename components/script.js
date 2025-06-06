@@ -15,7 +15,7 @@ $(document).ready(function () {
       success: function (response) {
         data = response.data[0];
         console.log(data);
-        console.log('teeys');
+        console.log("teeys");
 
         if (data.type == "single") {
           if (data.prediction == 0) {
@@ -40,10 +40,10 @@ $(document).ready(function () {
                     <span class="font-medium">Danger !</span> This Packet is predicted as Intrusion by ${data.model}
                 </div>
                 </div>`);
-          } else{
-            if(data.percent < 50){
+          } else {
+            if (data.percent < 50) {
               $("#result")
-              .html(`<div class="flex items-center p-4 mb-4 text-xs text-green-800 border border-green-300 rounded-lg bg-green-50 " role="alert">
+                .html(`<div class="flex items-center p-4 mb-4 text-xs text-green-800 border border-green-300 rounded-lg bg-green-50 " role="alert">
                 <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
                 </svg>
@@ -52,9 +52,9 @@ $(document).ready(function () {
                     <span class="font-medium">Info !</span> This Packet is ${data.percent}% predicted as not Intrusion 
                 </div>
                 </div>`);
-            }else{
+            } else {
               $("#result")
-              .html(`<div class="flex items-center p-4 mb-4 text-xs text-red-800 border border-red-300 rounded-lg bg-red-50 " role="alert">
+                .html(`<div class="flex items-center p-4 mb-4 text-xs text-red-800 border border-red-300 rounded-lg bg-red-50 " role="alert">
                 <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
                 </svg>
@@ -63,13 +63,12 @@ $(document).ready(function () {
                     <span class="font-medium">Danger !</span> This Packet is ${data.percent}% predicted as Intrusion  
                 </div>
                 </div>`);
-
             }
           }
         } else {
           var table = `<div class="overflow-x-auto">
               <div class="flex items-center justify-between mb-4">
-              <h2 class="text-lg font-semibold text-gray-900">Prediction Result By ${data.model == 'combined' ? 'Combined Algorithm' : data.model}</h2>
+              <h2 class="text-lg font-semibold text-gray-900">Prediction Result By ${data.model == "combined" ? "Combined Algorithm" : data.model}</h2>
               </div>
               <table class="mt-5 min-w-full divide-y divide-gray-200 text-center border">
                   <thead class="bg-gray-50">
@@ -87,7 +86,7 @@ $(document).ready(function () {
 
           for (let i = 0; i < data.prediction.length; i++) {
             const row = data.data[i];
-            if(data.model != 'combined'){
+            if (data.model != "combined") {
               table += `<tr>
                 <td class="px-5 py-4 text-gray-900">${i + 1}</td>
                 <td class="px-5 py-4 text-gray-900">${row.pkts}</td>
@@ -101,7 +100,7 @@ $(document).ready(function () {
                     </div>
                 </td>
             </tr>`;
-            }else{
+            } else {
               table += `<tr>
                 <td class="px-5 py-4 text-gray-900">${i + 1}</td>
                 <td class="px-5 py-4 text-gray-900">${row.pkts}</td>
@@ -115,7 +114,6 @@ $(document).ready(function () {
                     </div>
                 </td>
             </tr>`;
-
             }
           }
 
@@ -134,8 +132,18 @@ $(document).ready(function () {
     $("#result").empty();
   });
 
-  // SweetAlert Trigger
+  // SweetAlert Trigger - Dekstop
   $("#howitworks").on("click", function () {
+    Swal.fire({
+      title: "How it Works ?",
+      text: "This application detects intrusions based on anomaly detection using Machine Learning Model like KNN, Random Forest, an Decision Tree.",
+      icon: "question",
+      confirmButtonText: "Close",
+    });
+  });
+
+  // SweetAlert Trigger - Mobile
+  $("#howitworks-Mobile").on("click", function () {
     Swal.fire({
       title: "How it Works ?",
       text: "This application detects intrusions based on anomaly detection using Machine Learning Model like KNN, Random Forest, an Decision Tree.",
@@ -156,40 +164,6 @@ const algorithmOptions = {
   ],
 };
 
-let currentVersion = null;
-
-function switchContent(version) {
-  currentVersion = version;
-
-  const contentDiv = document.getElementById("knn-content");
-  const resultDiv = document.getElementById("result");
-  resultDiv.innerHTML = "";
-
-  if (version === "Version1.0.0") {
-    contentDiv.style.display = "block";
-    Swal.fire("Version 1.0.0", "Only K-Nearest Neighbor is available.", "info");
-  } else if (version === "Version1.0.1") {
-    let html =
-      '<p class="mb-2">Select Algorithm:</p><ul class="list-disc ml-6">';
-    algorithmOptions[version].forEach((algo) => {
-      html += `<li><a href="#" onclick="loadAlgorithm('${algo}')" class="text-blue-600 hover:underline">${algo}</a></li>`;
-    });
-    html += "</ul>";
-
-    Swal.fire({
-      title: "Version 1.0.1",
-      html: html,
-      icon: "info",
-      showConfirmButton: false,
-    });
-  }
-}
-
-function loadAlgorithm(algo) {
-  Swal.fire(`You selected ${algo}`, "", "success");
-  //....
-}
-
 document.addEventListener("DOMContentLoaded", function () {
   const versionBtn = document.getElementById("versionBtn");
   const versionMenu = document.getElementById("versionMenu");
@@ -203,32 +177,97 @@ document.addEventListener("DOMContentLoaded", function () {
     versionMenu.classList.add("hidden");
   });
 
-        document.getElementById('versionBtn').addEventListener('click', function() {
-        const menu = document.getElementById('versionMenu');
-        menu.classList.toggle('hidden');
-      });
+  document.getElementById("versionBtn").addEventListener("click", function () {
+    const menu = document.getElementById("versionMenu");
+    menu.classList.toggle("hidden");
+  });
 
-      // Close dropdown when clicking outside
-      document.addEventListener('click', function(event) {
-        const btn = document.getElementById('versionBtn');
-        const menu = document.getElementById('versionMenu');
-        
-        if (!btn.contains(event.target) && !menu.contains(event.target)) {
-          menu.classList.add('hidden');
-        }
-      });
+  // Close dropdown when clicking outside
+  document.addEventListener("click", function (event) {
+    const btn = document.getElementById("versionBtn");
+    const menu = document.getElementById("versionMenu");
 
-      // Add smooth transitions for form interactions
-      document.querySelectorAll('input, select').forEach(element => {
-        element.addEventListener('focus', function() {
-          this.parentElement.classList.add('transform', 'scale-105');
-        });
-        
-        element.addEventListener('blur', function() {
-          this.parentElement.classList.remove('transform', 'scale-105');
-        });
-      });
+    if (!btn.contains(event.target) && !menu.contains(event.target)) {
+      menu.classList.add("hidden");
+    }
+  });
+
+  // Add smooth transitions for form interactions
+  document.querySelectorAll("input, select").forEach((element) => {
+    element.addEventListener("focus", function () {
+      this.parentElement.classList.add("transform", "scale-105");
+    });
+
+    element.addEventListener("blur", function () {
+      this.parentElement.classList.remove("transform", "scale-105");
+    });
+  });
 });
 
+let mobileMenuOpen = false;
 
+// Toggle dropdown visibility
+function toggleDropdown(id) {
+  const el = document.getElementById(id);
+  if (el.classList.contains("hidden")) {
+    el.classList.remove("hidden");
+  } else {
+    el.classList.add("hidden");
+  }
+}
 
+// Enhanced mobile menu toggle
+function toggleMobileMenu() {
+  const mobileMenu = document.getElementById("mobileMenu");
+  const hamburger = document.getElementById("mobileMenuBtn");
+
+  if (!mobileMenuOpen) {
+    // Open menu
+    mobileMenu.classList.remove("translate-x-full");
+    mobileMenu.classList.add("translate-x-0");
+    hamburger.classList.add("active");
+    mobileMenuOpen = true;
+  } else {
+    // Close menu
+    mobileMenu.classList.remove("translate-x-0");
+    mobileMenu.classList.add("translate-x-full");
+    hamburger.classList.remove("active");
+    mobileMenuOpen = false;
+  }
+}
+
+// Close mobile menu when clicking outside
+document.addEventListener("click", function (event) {
+  const mobileMenu = document.getElementById("mobileMenu");
+  const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+
+  if (
+    mobileMenuOpen &&
+    !mobileMenu.contains(event.target) &&
+    !mobileMenuBtn.contains(event.target)
+  ) {
+    toggleMobileMenu();
+  }
+});
+
+// Handle window resize
+window.addEventListener("resize", function () {
+  if (window.innerWidth >= 1024 && mobileMenuOpen) {
+    toggleMobileMenu();
+  }
+});
+
+// Close dropdowns when clicking outside
+document.addEventListener("click", function (event) {
+  const versionBtn = document.getElementById("versionBtn");
+  const versionMenu = document.getElementById("versionMenu");
+
+  if (
+    versionBtn &&
+    versionMenu &&
+    !versionBtn.contains(event.target) &&
+    !versionMenu.contains(event.target)
+  ) {
+    versionMenu.classList.add("hidden");
+  }
+});
